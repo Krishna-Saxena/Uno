@@ -40,9 +40,6 @@ class Krishnas_Player(CardPriorityPlayer.CardPriorityPlayer):
         return 10
 
     def _get_priority(self, card, top_card, **kwargs):
-        last_cards = kwargs['last_cards']
-        next_turn = kwargs['next_turn']
-        discard = kwargs['discard']
         hand_lens = kwargs['hand_lens']
 
         if min(hand_lens) > 3:
@@ -51,3 +48,16 @@ class Krishnas_Player(CardPriorityPlayer.CardPriorityPlayer):
             return self._play_attacking(card, top_card)
 
     def choose_color(self, **kwargs):
+        last_cards = kwargs['last_cards']
+        next_turn = kwargs['next_turn']
+        discard = kwargs['discard']
+        hand_lens = kwargs['hand_lens']
+
+        if min(hand_lens) > 3 or last_cards[next_turn] is None:
+            return super().choose_color(**kwargs)
+        else:
+            most_discarded_color = super()._choose_most_common_non_black(discard)
+            if most_discarded_color is last_cards[next_turn].color and hand_lens[next_turn] == 1:
+                return super().choose_color(**kwargs)
+            else:
+                return most_discarded_color

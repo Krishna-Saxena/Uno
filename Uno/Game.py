@@ -112,7 +112,8 @@ class Game:
         
         # the player played a card
         if player_card is not None:
-            self.players_last_cards[self.turn] = player_card
+            if player_card.color is not Color.BLACK:
+                self.players_last_cards[self.turn] = player_card
 
             # add the card to the top of the discard deck
             self.discard_deck.append(player_card)
