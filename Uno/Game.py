@@ -130,11 +130,23 @@ class Game:
                 self._incr_turn()
             elif player_card.value is Value.WILD:
                 # player chooses new color
-                color = self.players[self.turn].choose_color()
+                color = self.players[self.turn].choose_color(
+                    last_cards=self.players_last_cards,
+                    next_turn=self._next_turn(),
+                    discard=self.discard_deck,
+                    hand_lens=player_hand_lens,
+                    total_turns=self.total_turns
+                )
                 self.discard_deck.append(color)
             elif player_card.value is Value.WILD4:
                 # player chooses new color
-                color = self.players[self.turn].choose_color()
+                color = self.players[self.turn].choose_color(
+                    last_cards=self.players_last_cards,
+                    next_turn=self._next_turn(),
+                    discard=self.discard_deck,
+                    hand_lens=player_hand_lens,
+                    total_turns=self.total_turns
+                )
                 self.discard_deck.append(color)
                 # go to the next player
                 self._incr_turn()
