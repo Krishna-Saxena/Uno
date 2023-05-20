@@ -2,6 +2,7 @@ from Uno.UnoEnums import Color, Value
 from Uno.Card import Card
 from Players.CardPriorityPlayer import CardPriorityPlayer
 
+
 # Priority:
 # wild > draw 2 > skip > reverse > value > color > wild4
 class WDSRCVW4_Player(CardPriorityPlayer):
