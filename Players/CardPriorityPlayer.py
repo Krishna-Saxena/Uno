@@ -31,5 +31,5 @@ class CardPriorityPlayer(Player):
         # print('idx', idx, 'hand[idx]', self.hand[idx] if idx != len(self.hand) else None)
         return self.hand.pop(idx) if idx != len(self.hand) else None
 
-    def choose_color(self):
-        return super().choose_color()
+    def choose_color(self, **kwargs):
+        return super().choose_color(**kwargs)
