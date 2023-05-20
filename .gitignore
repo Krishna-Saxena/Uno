@@ -1,3 +1,5 @@
 /.idea/
 
+*.csv
+*.png
 *.pyc
