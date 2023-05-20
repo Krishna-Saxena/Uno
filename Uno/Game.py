@@ -29,8 +29,10 @@ class Game:
         # whose turn is it?
         self.turn = random.randrange(self.n_players)
         self.dir = 1
+        self.total_turns = 1
 
     def _incr_turn(self):
+        self.total_turns += 1
         self.turn = (self.turn + self.dir) % self.n_players
 
     def _next_turn(self):
@@ -89,7 +91,8 @@ class Game:
             last_cards=self.players_last_cards,
             next_turn=self._next_turn(),
             discard=self.discard_deck,
-            hand_lens=player_hand_lens
+            hand_lens=player_hand_lens,
+            total_turns=self.total_turns
         )
 
         if player_card is None:
