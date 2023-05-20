@@ -1,11 +1,11 @@
 from Uno.UnoEnums import Color, Value
 from Uno.Card import Card
-from Uno.Players import CardPriorityPlayer
+from Players import CardPriorityPlayer
 
 # Priority:
 # draw 2 > skip > reverse > value > color > wild > wild4
-class DSRVCWW4_Player(CardPriorityPlayer.CardPriorityPlayer):
-    def _get_priority(self, card, top_card):
+class DSRVCW4W_Player(CardPriorityPlayer.CardPriorityPlayer):
+    def _get_priority(self, card, top_card, **kwargs):
         # give cards priority by value as described above
         if card.value is Value.DRAW2:
             return 0
@@ -17,9 +17,9 @@ class DSRVCWW4_Player(CardPriorityPlayer.CardPriorityPlayer):
             return 3
         elif card.color is (top_card.color if type(top_card) is Card else top_card):
             return 4
-        elif card.value is Value.WILD:
-            return 5
         elif card.value is Value.WILD4:
+            return 5
+        elif card.value is Value.WILD:
             return 6
         # this card is unplayable this turn
         return 10

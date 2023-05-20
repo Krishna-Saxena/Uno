@@ -18,6 +18,8 @@ class Game:
         # save the players
         self.players = players
         self.n_players = len(players)
+        # save the last card each player played
+        self.players_last_cards = [None]*self.n_players
 
         # deal 7 cards to each player
         for player in self.players:
@@ -27,16 +29,19 @@ class Game:
         # whose turn is it?
         self.turn = random.randrange(self.n_players)
         self.dir = 1
-    
+
     def _incr_turn(self):
         self.turn = (self.turn + self.dir) % self.n_players
+
+    def _next_turn(self):
+        return (self.turn + self.dir) % self.n_players
 
     def _get_winner(self):
         for i, player in enumerate(self.players):
             if len(player.hand) == 0:
                 return i
         return -1
-    
+
     def setup_round(self):
         # add the first card in the deck to discard deck
         c = self.deck.get_card(self.discard_deck)
@@ -76,17 +81,36 @@ class Game:
         # NOTE: type(card) can be Card or Color
         top_card = self.discard_deck[-1]
 
-        player_card = self.players[self.turn].play_card(top_card)
+        # calculate the length of everyone's hand
+        player_hand_lens = [len(player.hand) for player in self.players]
+
+        player_card = self.players[self.turn].play_card(
+            top_card,
+            last_cards=self.players_last_cards,
+            next_turn=self._next_turn(),
+            discard=self.discard_deck,
+            hand_lens=player_hand_lens
+        )
 
         if player_card is None:
             # if the player doesn't have a matching card
             # give the player a card
             self.players[self.turn].get_card(self.deck.get_card(self.discard_deck))
+
+            player_hand_lens[self.turn] += 1
             # player gets another chance to play
-            player_card = self.players[self.turn].play_card(top_card)
+            player_card = self.players[self.turn].play_card(
+                top_card,
+                last_cards=self.players_last_cards,
+                next_turn=self._next_turn(),
+                discard=self.discard_deck,
+                hand_lens=player_hand_lens
+            )
         
         # the player played a card
         if player_card is not None:
+            self.players_last_cards[self.turn] = player_card
+
             # add the card to the top of the discard deck
             self.discard_deck.append(player_card)
             if player_card.value is Value.DRAW2:

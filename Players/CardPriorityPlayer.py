@@ -2,18 +2,18 @@ from abc import ABC, abstractmethod
 
 from Uno.UnoEnums import Color
 from Uno.Card import Card
-from Uno.Players.Player import Player
+from Players.Player import Player
 
 class CardPriorityPlayer(Player):
     @abstractmethod
-    def _get_priority(self, card, top_card):
+    def _get_priority(self, card, top_card, **kwargs):
         pass
 
-    def play_card(self, top_card):
+    def play_card(self, top_card, **kwargs):
         # NOTE: type(top_card) can be Card or Color
         
         # sort hand by priority
-        self.hand = sorted(self.hand, key=lambda card : self._get_priority(card, top_card))
+        self.hand = sorted(self.hand, key=lambda card : self._get_priority(card, top_card, **kwargs))
         # print('sorted hand', ','.join(str(card) for card in self.hand))
 
         # play the highest priority valid card
