@@ -76,6 +76,9 @@ class Game:
         elif c.value is Value.WILD:
             #   player chooses color
             color = self.players[self.turn].choose_color(
+                last_cards=self.players_last_cards,
+                next_turn=self._next_turn(),
+                hand_lens=[0]*self.n_players,
                 total_turns=self.total_turns,
                 discard=self.discard_deck
             )
