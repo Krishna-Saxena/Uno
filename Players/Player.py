@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from collections import Counter
 
 from Uno.UnoEnums import Color
+from Uno import Card
 
 class Player(ABC):
     def __init__(self):

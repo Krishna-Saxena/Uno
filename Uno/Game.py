@@ -75,7 +75,10 @@ class Game:
         # wild on 1st turn:
         elif c.value is Value.WILD:
             #   player chooses color
-            color = self.players[self.turn].choose_color()
+            color = self.players[self.turn].choose_color(
+                total_turns=self.total_turns,
+                discard=self.discard_deck
+            )
             self.discard_deck.append(color)
             #   and keeps turn
     
@@ -107,7 +110,8 @@ class Game:
                 last_cards=self.players_last_cards,
                 next_turn=self._next_turn(),
                 discard=self.discard_deck,
-                hand_lens=player_hand_lens
+                hand_lens=player_hand_lens,
+                total_turns=self.total_turns
             )
         
         # the player played a card

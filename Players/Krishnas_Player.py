@@ -9,6 +9,8 @@ class Krishnas_Player(CardPriorityPlayer.CardPriorityPlayer):
             return 0
         elif card.value is Value.REV:
             return 1
+        elif type(top_card) is Card and card.value is Value.N0 and top_card.value is Value.N0:
+            return 1.5
         elif type(top_card) is Card and card.value is top_card.value:
             return 2
         elif card.color is (top_card.color if type(top_card) is Card else top_card):
@@ -37,7 +39,7 @@ class Krishnas_Player(CardPriorityPlayer.CardPriorityPlayer):
         elif card.value is Value.WILD:
             return 5
         # this card is unplayable this turn
-        return 10
+        return 100
 
     def _get_priority(self, card, top_card, **kwargs):
         hand_lens = kwargs['hand_lens']
@@ -56,7 +58,9 @@ class Krishnas_Player(CardPriorityPlayer.CardPriorityPlayer):
         if min(hand_lens) > 3 or last_cards[next_turn] is None:
             return super().choose_color(**kwargs)
         else:
-            most_discarded_color = super()._choose_most_common_non_black(discard)
+            colored_cards = [c for c in discard if type(c) is Card]
+            most_discarded_color = super()._choose_most_common_non_black(colored_cards) \
+                if len(colored_cards) > 0 else Color.GREEN
             if most_discarded_color is last_cards[next_turn].color and hand_lens[next_turn] == 1:
                 return super().choose_color(**kwargs)
             else:
